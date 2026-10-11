@@ -25,12 +25,15 @@ bool isPalindrome(int x) {
 }
 
 
-
-#include <stdio.h>
-
 struct ListNode {
     int val;
     struct ListNode *next;
+};
+
+struct TreeNode {
+     int val;
+     struct TreeNode *left;
+     struct TreeNode *right;
 };
 
 struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {
@@ -62,6 +65,94 @@ struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {
     return dummy.next;
 }
 
+int climbStairs(int n) {
+    // Cas de base pour les petites valeurs de n
+    if (n <= 0) return 0;
+    if (n == 1) return 1;
+    if (n == 2) return 2;
+
+    int prev2 = 1; // Représente les chemins pour n-2
+    int prev1 = 2; // Représente les chemins pour n-1
+    int current = 0;
+
+    // On calcule itérativement de la marche 3 jusqu'à n
+    for (int i = 3; i <= n; i++) {
+        current = prev1 + prev2; // La marche actuelle est la somme des 2 précédentes
+        prev2 = prev1;           // On décale d'un cran pour la prochaine itération
+        prev1 = current;
+    }
+    
+    printf("Voici le nombre de chemins pour monter %d marches : %d\n", n, current);
+    return current;
+}
+
+struct ListNode* deleteDuplicates(struct ListNode* head) {
+    struct ListNode nvListe;
+    nvListe.next = NULL;
+    struct ListNode* current = &nvListe;
+    while (head->next != NULL)
+    {
+        if (head->val == head->next) {
+            current = head->val;
+            head = head->next->next;
+        }
+        else {
+            current = head->val;
+            head = head->next;
+        }
+    }
+    return current;   
+}
+
+int maxDepth(struct TreeNode* root) {
+    int depth = 0;
+    if (root == NULL) {
+        return depth;
+    }
+    int leftWay = maxDepth(root->left);
+    int rightWay = maxDepth(root->right);
+
+    return 1 + (leftWay > rightWay ? leftWay : rightWay);
+    
+}
+
+/
+bool isMirror(struct TreeNode* t1, struct TreeNode* t2) {
+    if ((t1 == NULL) && (t2 == NULL)) {
+        return true;
+    }
+    if (((t1 == NULL) && (t2 != NULL)) || ((t1 != NULL) && (t2 == NULL))) {
+        return false;
+    }
+
+    if (t1->val != t2->val) {
+        return false;
+    }
+
+    return isMirror(t1->left, t2->right) && isMirror(t1->right, t2->left);
+}
+
+bool isSymmetric(struct TreeNode* root) {
+    if (root == NULL) {
+        return true;
+    }
+    return isMirror(root->left, root->right);
+}
+
+bool isSameTree(struct TreeNode* p, struct TreeNode* q) {
+    if ((p == NULL) && (q == NULL)) {
+        return true;
+    }
+    if ((p == NULL) || (q == NULL)){
+        return false;
+    }
+    if (p->val != q->val) {
+        return false;
+    }
+    return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
+}
+
+
 
 int main (void) {
     
@@ -72,6 +163,9 @@ int main (void) {
     printf("test1 : %d\n, test2 : %d\n, test3 : %d\n", test1, test2, test3);
 
     printf("=== 2. TEST LISTE CHAÎNÉE ===\n");
+
+
+    climbStairs(10);
 
     
 
