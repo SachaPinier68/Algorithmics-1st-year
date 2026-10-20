@@ -196,6 +196,41 @@ int** generate(int numRows, int* returnSize, int** returnColumnSizes) {
 }
 
 
+
+// Longest Common Prefix N°4
+
+int compare(const void* a, const void* b) {
+    const char* str1 = *(const char**)a;
+    const char* str2 = *(const char**)b;
+    return strcmp(str1, str2);
+}
+
+char* longestCommonPrefix(char** strs, int strsSize) {
+
+    if (strsSize == 0) {
+        char* empty = (char*)malloc(1);
+        empty[0] == '\0';
+        return empty;
+    }
+
+    qsort(strs, strsSize, sizeof(char*), compare);
+
+    char* first = strs[0];
+    char* last = strs[strsSize - 1];
+
+    int i = 0;
+    while (first[i] && last[i] && first[i] == last[i]) {
+        i++;
+    }
+
+    char* prefix = (char*)malloc((i + 1) * sizeof(char));
+    strncpy(prefix, first, i);
+    prefix[i] = '\0';
+
+    return prefix;
+}
+
+
 int main (void) {
     
     int test1 = isPalindrome(121);
